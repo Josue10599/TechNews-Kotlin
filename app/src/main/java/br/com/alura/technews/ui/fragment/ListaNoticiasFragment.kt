@@ -45,7 +45,7 @@ class ListaNoticiasFragment : Fragment() {
     }
 
     private fun configuraFabAdicionaNoticia() {
-        fragment_lista_noticias_fab_salva_noticia.setOnClickListener { abreFormularioModoCriacao }
+        fragment_lista_noticias_fab_salva_noticia.setOnClickListener { abreFormularioModoCriacao() }
     }
 
     private fun configuraRecyclerView() {
