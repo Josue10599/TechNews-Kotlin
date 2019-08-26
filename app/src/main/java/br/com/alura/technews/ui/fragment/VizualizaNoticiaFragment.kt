@@ -14,6 +14,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val MENSAGEM_FALHA_REMOCAO = "Não foi possível remover notícia"
 private const val NOTICIA_NAO_ENCONTRADA = "Notícia não encontrada"
+private const val TITULO_APPBAR = "Notícia"
 
 class VizualizaNoticiaFragment : Fragment() {
     private val noticiaId: Long by lazy {
@@ -23,7 +24,7 @@ class VizualizaNoticiaFragment : Fragment() {
     private val viewModel: VizualizaNoticiaViewModel by viewModel()
 
     var finalizaActivity: () -> Unit = {}
-    var abreFormularioEdicao: () -> Unit = {}
+    var abreFormularioEdicao: (noticiaSelecionada: Noticia) -> Unit = {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,7 @@ class VizualizaNoticiaFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.title = TITULO_APPBAR
         return inflater.inflate(R.layout.fragment_vizualiza_noticia, container, false)
     }
 
@@ -47,7 +49,7 @@ class VizualizaNoticiaFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.visualiza_noticia_menu_edita -> abreFormularioEdicao
+            R.id.visualiza_noticia_menu_edita -> abreFormularioEdicao(noticia)
             R.id.visualiza_noticia_menu_remove -> remove()
         }
         return super.onOptionsItemSelected(item)

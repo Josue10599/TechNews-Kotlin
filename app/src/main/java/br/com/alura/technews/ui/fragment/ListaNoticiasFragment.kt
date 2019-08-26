@@ -18,6 +18,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carregar as novas notícias"
+private const val TITULO_APPBAR = "Notícias"
 
 class ListaNoticiasFragment : Fragment() {
     private val listaNoticiasViewModels: ListaNoticiasViewModel by viewModel()
@@ -35,6 +36,7 @@ class ListaNoticiasFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.title = TITULO_APPBAR
         return inflater.inflate(R.layout.fragment_lista_noticias, container, false)
     }
 
