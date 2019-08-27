@@ -29,6 +29,7 @@ class ListaNoticiasActivity : AppCompatActivity() {
                 val argumentsAntigos = antigofragment.arguments
                 val novoFragment = VizualizaNoticiaFragment()
                 novoFragment.arguments = argumentsAntigos
+                removeFragment(antigofragment)
                 abreVisualizaNoticia(novoFragment)
             }
     }

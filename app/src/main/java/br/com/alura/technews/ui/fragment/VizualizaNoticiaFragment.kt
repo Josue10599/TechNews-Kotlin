@@ -66,7 +66,7 @@ class VizualizaNoticiaFragment : Fragment() {
     private fun verificaIdDaNoticia() {
         if (noticiaId == 0L) {
             mostraErro(NOTICIA_NAO_ENCONTRADA)
-            finalizaActivity
+            finalizaActivity()
         }
     }
 
@@ -78,7 +78,7 @@ class VizualizaNoticiaFragment : Fragment() {
     private fun remove() {
         viewModel.remove(noticia)
             .observe(this, Observer {
-                if (it.erro == null) finalizaActivity
+                if (it.erro == null) finalizaActivity()
                 else mostraErro(MENSAGEM_FALHA_REMOCAO)
             })
     }
