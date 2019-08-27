@@ -22,7 +22,6 @@ class VizualizaNoticiaFragment : Fragment() {
     }
     private lateinit var noticia: Noticia
     private val viewModel: VizualizaNoticiaViewModel by viewModel()
-
     var finalizaActivity: () -> Unit = {}
     var abreFormularioEdicao: (noticiaSelecionada: Noticia) -> Unit = {}
 
@@ -77,8 +76,7 @@ class VizualizaNoticiaFragment : Fragment() {
     }
 
     private fun remove() {
-        if (::noticia.isInitialized)
-            viewModel.remove(noticia)
+        viewModel.remove(noticia)
             .observe(this, Observer {
                 if (it.erro == null) finalizaActivity
                 else mostraErro(MENSAGEM_FALHA_REMOCAO)

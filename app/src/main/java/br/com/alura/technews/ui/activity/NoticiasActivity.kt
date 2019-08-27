@@ -1,7 +1,6 @@
 package br.com.alura.technews.ui.activity
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,16 +20,24 @@ class ListaNoticiasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_noticias)
         if (savedInstanceState == null) abreListaNoticias()
-        else {
-            supportFragmentManager.findFragmentByTag(TAG_VIZUALIZA_NOTICIA_FRAGMENT)?.let {
+        else configuraFragmentSecundarioPeloEstado()
+    }
+
+    private fun configuraFragmentSecundarioPeloEstado() {
+        supportFragmentManager.findFragmentByTag(TAG_VIZUALIZA_NOTICIA_FRAGMENT)
+            ?.let { antigofragment ->
+                val argumentsAntigos = antigofragment.arguments
                 val novoFragment = VizualizaNoticiaFragment()
-                val argumentsAntigos = it.arguments
                 novoFragment.arguments = argumentsAntigos
-                fragmentTransaction { remove(it) }
-                supportFragmentManager.popBackStack()
                 abreVisualizaNoticia(novoFragment)
             }
+    }
+
+    private fun removeFragment(fragment: Fragment) {
+        fragmentTransaction {
+            remove(fragment)
         }
+        supportFragmentManager.popBackStack()
     }
 
     override fun onAttachFragment(fragment: Fragment?) {
@@ -42,7 +49,11 @@ class ListaNoticiasActivity : AppCompatActivity() {
     }
 
     private fun configuraVizualizaNoticia(fragment: VizualizaNoticiaFragment) {
-        fragment.finalizaActivity = this::finish
+        fragment.finalizaActivity = {
+            supportFragmentManager.findFragmentByTag(TAG_VIZUALIZA_NOTICIA_FRAGMENT)?.let {
+                removeFragment(it)
+            }
+        }
         fragment.abreFormularioEdicao = this::abreFormularioEdicao
     }
 
@@ -65,16 +76,21 @@ class ListaNoticiasActivity : AppCompatActivity() {
         }
     }
 
-    private fun abreVisualizaNoticia(fragment: VizualizaNoticiaFragment) {
-        if (frame_layout_secundario == null)
-            fragmentTransaction {
-                addToBackStack(TAG_VIZUALIZA_NOTICIA_FRAGMENT)
-                replace(R.id.frame_layout_principal, fragment, TAG_VIZUALIZA_NOTICIA_FRAGMENT)
-            }
-        else {
-            fragmentTransaction {
-                replace(R.id.frame_layout_secundario, fragment, TAG_VIZUALIZA_NOTICIA_FRAGMENT)
-            }
+    private fun abreVisualizaNoticia(fragment: Fragment) {
+        if (frame_layout_secundario != null) abreVisualizaNoticiaFragmentPortrait(fragment)
+        else abreFragmentVizualizaNoticiaLandscape(fragment)
+    }
+
+    private fun abreVisualizaNoticiaFragmentPortrait(fragment: Fragment) {
+        fragmentTransaction {
+            replace(R.id.frame_layout_secundario, fragment, TAG_VIZUALIZA_NOTICIA_FRAGMENT)
+        }
+    }
+
+    private fun abreFragmentVizualizaNoticiaLandscape(fragment: Fragment) {
+        fragmentTransaction {
+            addToBackStack(TAG_VIZUALIZA_NOTICIA_FRAGMENT)
+            replace(R.id.frame_layout_principal, fragment, TAG_VIZUALIZA_NOTICIA_FRAGMENT)
         }
     }
 
